@@ -20,21 +20,22 @@ public class Main {
         }
         System.out.print("Введите цифру, которую нужно найти: ");
         int number = scan.nextInt();
+        Arrays.sort(arrayNum);
         long start, end;
         start = System.nanoTime();
-        int result = RecursionSearchWord(arrayNum, number);
+        int result = RecursionSearchNum(arrayNum,0, arrayNum.length - 1, number);
         end = System.nanoTime();
-        System.out.println(result == 0 ? "Такое число отсутствует!" : "Число найдено! Вернувшееся значение: " + result);
+        System.out.println(result == -1 ? "Такое число отсутствует!" : "Число найдено! Вернувшееся значение: " + result);
         System.out.println("Алгоритм поиска проработал " + ((double) (end - start) / 1000000) + " миллисекунд!");
     }
 
-    private static int RecursionSearchWord(int[] arrayNum, int number){
-        int size = arrayNum.length/2;
-        for(int j = 0; j < size; j++)
-            if(arrayNum[j] == number)
-                return arrayNum[j];
-        if(arrayNum.length == 1)
-            return arrayNum[0] == number ? arrayNum[0] : 0;
-        return RecursionSearchWord(Arrays.copyOfRange(arrayNum, size, arrayNum.length), number);
+    private static int RecursionSearchNum(int[] arr, int first, int last, int num){
+        if (last >= first) {
+            int mid = first + (last - first) / 2;
+            if (arr[mid] == num) return arr[mid];
+            if (arr[mid] > num) return RecursionSearchNum(arr, first, mid - 1, num);
+            return RecursionSearchNum(arr, mid + 1, last, num);
+        }
+        return -1;
     }
 }
